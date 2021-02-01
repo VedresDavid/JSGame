@@ -1,24 +1,24 @@
-let DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
-let CARD_PICTURE_ROOT_VALUES = []
-let GAME_DIV_IN_DOM = document.getElementById('gameDiv')
+let DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 };
+let CARD_PICTURE_ROOT_VALUES = [];
+let GAME_DIV_IN_DOM = document.getElementById('gameDiv');
 let scores = [0, 0];
 let enemyCards = [];
 
 
 function getCardRoots() {
     for (let i = 2; i < 11; i++) {
-        CARD_PICTURE_ROOT_VALUES.push(`${i}C`)
-        CARD_PICTURE_ROOT_VALUES.push(`${i}D`)
-        CARD_PICTURE_ROOT_VALUES.push(`${i}H`)
-        CARD_PICTURE_ROOT_VALUES.push(`${i}S`)
+        CARD_PICTURE_ROOT_VALUES.push(`${i}C`);
+        CARD_PICTURE_ROOT_VALUES.push(`${i}D`);
+        CARD_PICTURE_ROOT_VALUES.push(`${i}H`);
+        CARD_PICTURE_ROOT_VALUES.push(`${i}S`);
     }
 
-    let a = ["J", "Q", "K", "A"]
+    let a = ["J", "Q", "K", "A"];
     for (let card of a) {
-        CARD_PICTURE_ROOT_VALUES.push(`${card}C`)
-        CARD_PICTURE_ROOT_VALUES.push(`${card}D`)
-        CARD_PICTURE_ROOT_VALUES.push(`${card}H`)
-        CARD_PICTURE_ROOT_VALUES.push(`${card}S`)
+        CARD_PICTURE_ROOT_VALUES.push(`${card}C`);
+        CARD_PICTURE_ROOT_VALUES.push(`${card}D`);
+        CARD_PICTURE_ROOT_VALUES.push(`${card}H`);
+        CARD_PICTURE_ROOT_VALUES.push(`${card}S`);
     }
 }
 
@@ -26,29 +26,28 @@ function getCardRoots() {
 
 function addEventListenersToButtons() {
     document.getElementById("hit").addEventListener("click", () => {
-        let cardType = addScore(0)
+        let cardType = addScore(0);
 
-        let card = getRandomCardOfType(cardType)
+        let card = getRandomCardOfType(cardType);
 
-        let image = document.createElement("img")
-        image.src = `/static/cards/${card}.png`
-        image.width = 100
-        GAME_DIV_IN_DOM.appendChild(image)
+        let image = document.createElement("img");
+        image.src = `/static/cards/${card}.png`;
+        image.width = 100;
+        GAME_DIV_IN_DOM.appendChild(image);
 
-        // GAME_DIV_IN_DOM.innerHTML += `
-        // <img src="/static/cards/${card}.png" width="100px">`;
+        // GAME_DIV_IN_DOM.innerHTML += `<img src="/static/cards/${card}.png" width="100px">`;
 
         let aiStillMove = !(scores[1] > 17)
         if (aiStillMove) {
-            let cardType = addScore(1)
-            enemyCards.push(getRandomCardOfType(cardType))
+            let cardType = addScore(1);
+            enemyCards.push(getRandomCardOfType(cardType));
         }
-        updateScores()
+        updateScores();
 
         if (scores[0] > 21) {
             while (scores[1] < 18) {
-                let cardType = addScore(1)
-                enemyCards.push(getRandomCardOfType(cardType))
+                let cardType = addScore(1);
+                enemyCards.push(getRandomCardOfType(cardType));
             }
             updateScores();
 
@@ -58,8 +57,8 @@ function addEventListenersToButtons() {
 
     document.getElementById("stand").addEventListener("click", () => {
         while (scores[1] < 18) {
-            let cardType = addScore(1)
-            enemyCards.push(getRandomCardOfType(cardType))
+            let cardType = addScore(1);
+            enemyCards.push(getRandomCardOfType(cardType));
         }
         updateScores();
 
@@ -69,10 +68,10 @@ function addEventListenersToButtons() {
 
 
 function getRandomCardOfType(cardType) {
-    let availableCards = []
+    let availableCards = [];
     for (let card of CARD_PICTURE_ROOT_VALUES) {
         if (card.includes(cardType)) {
-            availableCards.push(card)
+            availableCards.push(card);
         }
     }
     let cardToPickIndex = Math.floor(Math.random() * availableCards.length);
@@ -96,7 +95,7 @@ function addScore(player) {
         } else {
             scores[player] += cardValue;
         }
-        return cardValue.toString()
+        return cardValue.toString();
     }
 }
 
@@ -107,7 +106,7 @@ function checkWinLose() {
     <button id="newGame">New game!</button>
     <br>
     Enemy cards was:
-    <br>`
+    <br>`;
 
     let tie = scores[0] == scores[1] || (scores[0] > 21 && scores[1] > 21);
     let player1win = (scores[0] > scores[1] && scores[0] <= 21) ||
@@ -132,7 +131,7 @@ function checkWinLose() {
     document.getElementById("newGame").onclick = () => {
         scores = [0, 0];
         enemyCards = [];
-        DECK_CARDS_LEFT = {A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
+        DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
         GAME_DIV_IN_DOM.innerHTML = `
         <h3>Your Score is: <span id="score">0</span></h3>
         <h3>enemy Score is: <span id="enemyScore">0</span></h3>
@@ -223,8 +222,11 @@ function pickCard() {
     }
 }
 
+
 function game() {
     getCardRoots();
     addEventListenersToButtons();
 }
-game()
+
+
+game();
