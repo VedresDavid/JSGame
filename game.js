@@ -1,8 +1,11 @@
 let DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 };
 let CARD_PICTURE_ROOT_VALUES = [];
 let GAME_DIV_IN_DOM = document.getElementById('gameDiv');
+let ENEMY_CARDS_DIV = document.getElementById("enemyCards");
+let YOUR_CARDS_DIV = document.getElementById("yourCards");
 let scores = [0, 0];
 let enemyCards = [];
+let yourCards = [];
 
 
 function getCardRoots() {
@@ -33,7 +36,13 @@ function addEventListenersToButtons() {
         let image = document.createElement("img");
         image.src = `/static/cards/${card}.png`;
         image.width = 100;
-        GAME_DIV_IN_DOM.appendChild(image);
+        YOUR_CARDS_DIV.appendChild(image);
+        yourCards.push(image);
+
+        let enemyCard = document.createElement("img");
+        enemyCard.src = `/static/cards/cardback.png`;
+        enemyCard.width = 100;
+        ENEMY_CARDS_DIV.appendChild(enemyCard);
 
         // GAME_DIV_IN_DOM.innerHTML += `<img src="/static/cards/${card}.png" width="100px">`;
 
@@ -105,7 +114,6 @@ function checkWinLose() {
     Enemy score: ${scores[1]}<br>
     <button id="newGame">New game!</button>
     <br>
-    Enemy cards was:
     <br>`;
 
     let tie = scores[0] == scores[1] || (scores[0] > 21 && scores[1] > 21);
@@ -114,6 +122,7 @@ function checkWinLose() {
     if (tie) {
         GAME_DIV_IN_DOM.innerHTML = `Thats a tie!!!<br>
         ${finalScores}`;
+
     } else if (player1win) {
         GAME_DIV_IN_DOM.innerHTML = `You won!!!<br>
         ${finalScores}`;
@@ -121,16 +130,21 @@ function checkWinLose() {
         GAME_DIV_IN_DOM.innerHTML = `You lose!!!<br>
         ${finalScores}`;
     }
+    ENEMY_CARDS_DIV.innerHTML = "";
     for (let card of enemyCards) {
         let image = document.createElement("img")
         image.src = `/static/cards/${card}.png`
         image.width = 100
-        GAME_DIV_IN_DOM.appendChild(image)
+        // GAME_DIV_IN_DOM.appendChild(image)
+        ENEMY_CARDS_DIV.appendChild(image);
     }
+
 
     document.getElementById("newGame").onclick = () => {
         scores = [0, 0];
         enemyCards = [];
+        ENEMY_CARDS_DIV.innerHTML = "";
+        YOUR_CARDS_DIV.innerHTML = "";
         DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
         GAME_DIV_IN_DOM.innerHTML = `
         <h3>Your Score is: <span id="score">0</span></h3>
