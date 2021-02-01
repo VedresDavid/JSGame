@@ -7,8 +7,8 @@ let DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 
 // body dom element
 let DOM_BODY = document.getElementById('body')
 
-let score = 0;
-let enemyScore = 0;
+
+let scores = [0, 0];
 
 // just fo debug
 function PrintDeck() {
@@ -18,45 +18,73 @@ function PrintDeck() {
 
 
 document.getElementById("hit").addEventListener("click", () => {
-    // player turn
-    if (!(score > 21)) {
-        let cardValue = pickCard();
-        if (cardValue == 'A') {
-            if (score > 10) {
-                score += 1;
-            } else {
-                score += 11;
-            }
-        } else {
-            score += cardValue;
-        }
-        updateScore(score)
+    // adding scores to player and enemy
+    addScore(0)
+    if (!(scores[1] > 17)) {
+        addScore(1)
     }
-    // ai turn
-    if (!(enemyScore > 21)) {
-        let cardValue = pickCard();
-        if (cardValue == 'A') {
-            if (enemyScore > 10) {
-                enemyScore += 1;
-            } else {
-                enemyScore += 11;
-            }
-        } else {
-            enemyScore += cardValue;
+    updateScores(scores[0])
+
+    if (scores[0] > 21) {
+        while (scores[1] < 18) {
+            addScore(1)
         }
+
+        updateScores();
+
+        checkWinLose();
     }
-    PrintDeck();
 });
+
+
+function addScore(player) {
+    if (!(scores[player] > 21)) {
+        let cardValue = pickCard();
+        if (cardValue == 'A') {
+            if (scores[player] > 10) {
+                scores[player] += 1;
+            } else {
+                scores[player] += 11;
+            }
+        } else {
+            scores[player] += cardValue;
+        }
+    }
+}
 
 
 document.getElementById("stand").addEventListener("click", () => {
-    // ai kör
-    //le csekkolni ki győzött
+    while (scores[1] < 18) {
+        addScore(1)
+    }
+
+    updateScores();
+
+    checkWinLose();
 });
 
-function updateScore(score) {
-    document.getElementById("score").innerHTML = score;
-    document.getElementById("enemyScore").innerHTML = enemyScore;
+
+function checkWinLose() {
+    let finalScores = `
+    Your score: ${scores[0]}<br>
+    Enemy score: ${scores[1]}`
+    if (scores[0] == scores[1] || (scores[0] > 21 && scores[1] > 21)) {
+        DOM_BODY.innerHTML = `Thats a tie!!!<br>
+        ${finalScores}`;
+    } else if ((scores[0] > scores[1] && scores[0] <= 21) ||
+        (scores[0] < scores[1] && scores[1] > 21)) {
+        DOM_BODY.innerHTML = `You won!!!<br>
+        ${finalScores}`;
+    } else {
+        DOM_BODY.innerHTML = `You lose!!!<br>
+        ${finalScores}`;
+    }
+}
+
+
+function updateScores() {
+    document.getElementById("score").innerHTML = scores[0];
+    document.getElementById("enemyScore").innerHTML = scores[1];
 }
 
 
