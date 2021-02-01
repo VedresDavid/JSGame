@@ -1,26 +1,14 @@
-// A is either 1 or 11
-// K J Q is 10
-// there are 4 of every card in a single deck
-
 let DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
 
-// body dom element
 let DOM_BODY = document.getElementById('body')
-
 
 let scores = [0, 0];
 
-// just fo debug
-function PrintDeck() {
-    console.log(DECK_CARDS_LEFT);
-}
-
-
-
-document.getElementById("hit").addEventListener("click", () => {
-    // adding scores to player and enemy
+function addEventListeners() {
+    document.getElementById("hit").addEventListener("click", () => {
     addScore(0)
-    if (!(scores[1] > 17)) {
+    let aiStillMove = !(scores[1] > 17)
+    if (aiStillMove) {
         addScore(1)
     }
     updateScores(scores[0])
@@ -29,12 +17,24 @@ document.getElementById("hit").addEventListener("click", () => {
         while (scores[1] < 18) {
             addScore(1)
         }
-
         updateScores();
 
         checkWinLose();
     }
 });
+
+
+document.getElementById("stand").addEventListener("click", () => {
+    while (scores[1] < 18) {
+        addScore(1)
+    }
+    
+    updateScores();
+    
+    checkWinLose();
+});
+}
+addEventListeners()
 
 
 function addScore(player) {
@@ -52,33 +52,36 @@ function addScore(player) {
     }
 }
 
-
-document.getElementById("stand").addEventListener("click", () => {
-    while (scores[1] < 18) {
-        addScore(1)
-    }
-
-    updateScores();
-
-    checkWinLose();
-});
-
-
 function checkWinLose() {
     let finalScores = `
     Your score: ${scores[0]}<br>
-    Enemy score: ${scores[1]}`
-    if (scores[0] == scores[1] || (scores[0] > 21 && scores[1] > 21)) {
+    Enemy score: ${scores[1]}<br>
+    <button id="newGame">New game!</button>`
+
+    let tie = scores[0] == scores[1] || (scores[0] > 21 && scores[1] > 21);
+    let player1win = (scores[0] > scores[1] && scores[0] <= 21) ||
+                     (scores[0] < scores[1] && scores[1] > 21);
+    if (tie) {
         DOM_BODY.innerHTML = `Thats a tie!!!<br>
         ${finalScores}`;
-    } else if ((scores[0] > scores[1] && scores[0] <= 21) ||
-        (scores[0] < scores[1] && scores[1] > 21)) {
+    } else if (player1win) {
         DOM_BODY.innerHTML = `You won!!!<br>
         ${finalScores}`;
     } else {
         DOM_BODY.innerHTML = `You lose!!!<br>
         ${finalScores}`;
     }
+    document.getElementById("newGame").onclick = () => {
+        scores = [0, 0];
+        DECK_CARDS_LEFT = {A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
+        DOM_BODY.innerHTML = `
+        <h3>Your Score is: <span id="score">0</span></h3>
+        <h3>enemy Score is: <span id="enemyScore">0</span></h3>
+        <button id="hit">Hit!</button>
+        <button id="stand">Stand!</button>`
+        addEventListeners();
+    }
+
 }
 
 
@@ -86,7 +89,6 @@ function updateScores() {
     document.getElementById("score").innerHTML = scores[0];
     document.getElementById("enemyScore").innerHTML = scores[1];
 }
-
 
 
 function pickCard() {
