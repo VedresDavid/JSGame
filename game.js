@@ -123,7 +123,6 @@ function checkWinLose() {
         ${finalScores}`;
     }
     for (let card of enemyCards) {
-        console.log(enemyCards)
         let image = document.createElement("img")
         image.src = `/static/cards/${card}.png`
         image.width = 100
@@ -132,7 +131,8 @@ function checkWinLose() {
 
     document.getElementById("newGame").onclick = () => {
         scores = [0, 0];
-        DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
+        enemyCards = [];
+        DECK_CARDS_LEFT = {A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
         GAME_DIV_IN_DOM.innerHTML = `
         <h3>Your Score is: <span id="score">0</span></h3>
         <h3>enemy Score is: <span id="enemyScore">0</span></h3>
