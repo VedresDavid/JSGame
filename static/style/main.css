@@ -2,3 +2,8 @@ body {
     background-size: cover;
     color: blanchedalmond;
 }
+
+
+#gameDiv {
+    color: blue;
+}
