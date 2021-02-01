@@ -2,6 +2,7 @@ let DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 
 let CARD_PICTURE_ROOT_VALUES = []
 let GAME_DIV_IN_DOM = document.getElementById('gameDiv')
 let scores = [0, 0];
+let enemyCards = [];
 
 
 function getCardRoots() {
@@ -33,19 +34,21 @@ function addEventListenersToButtons() {
         image.src = `/static/cards/${card}.png`
         image.width = 100
         GAME_DIV_IN_DOM.appendChild(image)
-        
+
         // GAME_DIV_IN_DOM.innerHTML += `
         // <img src="/static/cards/${card}.png" width="100px">`;
 
         let aiStillMove = !(scores[1] > 17)
         if (aiStillMove) {
-            addScore(1)
+            let cardType = addScore(1)
+            enemyCards.push(getRandomCardOfType(cardType))
         }
         updateScores()
 
         if (scores[0] > 21) {
             while (scores[1] < 18) {
-                addScore(1)
+                let cardType = addScore(1)
+                enemyCards.push(getRandomCardOfType(cardType))
             }
             updateScores();
 
@@ -55,7 +58,8 @@ function addEventListenersToButtons() {
 
     document.getElementById("stand").addEventListener("click", () => {
         while (scores[1] < 18) {
-            addScore(1)
+            let cardType = addScore(1)
+            enemyCards.push(getRandomCardOfType(cardType))
         }
         updateScores();
 
@@ -100,7 +104,10 @@ function checkWinLose() {
     let finalScores = `
     Your score: ${scores[0]}<br>
     Enemy score: ${scores[1]}<br>
-    <button id="newGame">New game!</button>`
+    <button id="newGame">New game!</button>
+    <br>
+    Enemy cards was:
+    <br>`
 
     let tie = scores[0] == scores[1] || (scores[0] > 21 && scores[1] > 21);
     let player1win = (scores[0] > scores[1] && scores[0] <= 21) ||
@@ -115,6 +122,14 @@ function checkWinLose() {
         GAME_DIV_IN_DOM.innerHTML = `You lose!!!<br>
         ${finalScores}`;
     }
+    for (let card of enemyCards) {
+        console.log(enemyCards)
+        let image = document.createElement("img")
+        image.src = `/static/cards/${card}.png`
+        image.width = 100
+        GAME_DIV_IN_DOM.appendChild(image)
+    }
+
     document.getElementById("newGame").onclick = () => {
         scores = [0, 0];
         DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
