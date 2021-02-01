@@ -1,6 +1,6 @@
 let DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
 let CARD_PICTURE_ROOT_VALUES = []
-let DOM_BODY = document.getElementById('body')
+let GAME_DIV_IN_DOM = document.getElementById('gameDiv')
 let scores = [0, 0];
 
 
@@ -28,9 +28,14 @@ function addEventListenersToButtons() {
         let cardType = addScore(0)
 
         let card = getRandomCardOfType(cardType)
-        // DOM_BODY.innerHTML += `
-        // <img src="/static/cards/${card}.png>`
 
+        let image = document.createElement("img")
+        image.src = `/static/cards/${card}.png`
+        image.width = 100
+        GAME_DIV_IN_DOM.appendChild(image)
+        
+        // GAME_DIV_IN_DOM.innerHTML += `
+        // <img src="/static/cards/${card}.png" width="100px">`;
 
         let aiStillMove = !(scores[1] > 17)
         if (aiStillMove) {
@@ -101,23 +106,24 @@ function checkWinLose() {
     let player1win = (scores[0] > scores[1] && scores[0] <= 21) ||
         (scores[0] < scores[1] && scores[1] > 21);
     if (tie) {
-        DOM_BODY.innerHTML = `Thats a tie!!!<br>
+        GAME_DIV_IN_DOM.innerHTML = `Thats a tie!!!<br>
         ${finalScores}`;
     } else if (player1win) {
-        DOM_BODY.innerHTML = `You won!!!<br>
+        GAME_DIV_IN_DOM.innerHTML = `You won!!!<br>
         ${finalScores}`;
     } else {
-        DOM_BODY.innerHTML = `You lose!!!<br>
+        GAME_DIV_IN_DOM.innerHTML = `You lose!!!<br>
         ${finalScores}`;
     }
     document.getElementById("newGame").onclick = () => {
         scores = [0, 0];
         DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
-        DOM_BODY.innerHTML = `
+        GAME_DIV_IN_DOM.innerHTML = `
         <h3>Your Score is: <span id="score">0</span></h3>
         <h3>enemy Score is: <span id="enemyScore">0</span></h3>
         <button id="hit">Hit!</button>
-        <button id="stand">Stand!</button>`
+        <button id="stand">Stand!</button>
+        <br>`
         addEventListenersToButtons();
     }
 
