@@ -206,5 +206,4 @@ function game() {
     getCardRoots();
     addEventListenersToButtons();
 }
-
-game();
+game()
