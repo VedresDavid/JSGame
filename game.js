@@ -25,8 +25,6 @@ function getCardRoots() {
     }
 }
 
-
-
 function addEventListenersToButtons() {
     document.getElementById("hit").addEventListener("click", () => {
         let cardType = addScore(0);
@@ -43,6 +41,8 @@ function addEventListenersToButtons() {
         enemyCard.src = `/static/cards/cardback.png`;
         enemyCard.width = 100;
         ENEMY_CARDS_DIV.appendChild(enemyCard);
+
+        let audio = new Audio("/static/sounds/deal.wav").play();
 
         // GAME_DIV_IN_DOM.innerHTML += `<img src="/static/cards/${card}.png" width="100px">`;
 
@@ -130,6 +130,7 @@ function checkWinLose() {
         GAME_DIV_IN_DOM.innerHTML = `You lose!!!<br>
         ${finalScores}`;
     }
+    let shuffleSound = new Audio("/static/sounds/shuffle.wav").play();
     ENEMY_CARDS_DIV.innerHTML = "";
     for (let card of enemyCards) {
         let image = document.createElement("img")
