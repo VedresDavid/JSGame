@@ -7,6 +7,9 @@ let scores = [0, 0];
 let enemyCards = [];
 let yourCards = [];
 let money = 500;
+let mainMusic = new Audio("/static/sounds/mainMusic.mp3")
+mainMusic.volume = 0.5;
+mainMusic.play()
 
 
 function getCardRoots() {
@@ -116,27 +119,37 @@ function checkWinLose() {
     <button id="newGame">Next Round!</button>
     <br>
     <br>`;
-
     let tie = scores[0] == scores[1] || (scores[0] > 21 && scores[1] > 21);
     let player1win = (scores[0] > scores[1] && scores[0] <= 21) ||
         (scores[0] < scores[1] && scores[1] > 21);
     if (tie) {
-        GAME_DIV_IN_DOM.innerHTML = `Thats a tie!!!<br>
+        GAME_DIV_IN_DOM.innerHTML = `That round was a tie.<br>
         ${finalScores}`;
-
     } else if (player1win) {
-        GAME_DIV_IN_DOM.innerHTML = `You won!!!<br>
-        ${finalScores}`;
         money += 150;
         if (money >= 1000) {
-
+            GAME_DIV_IN_DOM.innerHTML = `
+            You won the game!
+            <br>
+            <button id="newGame">New game!</button>
+            <br>`
+            money = 500;
+        } else {
+            GAME_DIV_IN_DOM.innerHTML = `You won this round and 150 $!<br>
+            ${finalScores}`;
         }
     } else {
-        GAME_DIV_IN_DOM.innerHTML = `You lose!!!<br>
-        ${finalScores}`;
         money -= 150;
         if (money <= 0) {
-            
+            GAME_DIV_IN_DOM.innerHTML = `
+            You lost the game!
+            <br>
+            <button id="newGame">New game!</button>
+            <br>`
+            money = 500;
+        } else {
+            GAME_DIV_IN_DOM.innerHTML = `You lost this round and 150 $!<br>
+            ${finalScores}`;
         }
     }
     let shuffleSound = new Audio("/static/sounds/shuffle.wav").play();
