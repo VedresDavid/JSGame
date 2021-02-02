@@ -8,8 +8,8 @@ let enemyCards = [];
 let yourCards = [];
 let money = 500;
 let mainMusic = new Audio("/static/sounds/mainMusic.mp3")
-mainMusic.volume = 0.5;
-mainMusic.play()
+
+
 
 
 function getCardRoots() {
@@ -31,6 +31,8 @@ function getCardRoots() {
 
 function addEventListenersToButtons() {
     document.getElementById("hit").addEventListener("click", () => {
+        mainMusic.volume = 0.5;
+        mainMusic.play()
         let cardType = addScore(0);
 
         let card = getRandomCardOfType(cardType);
@@ -69,6 +71,8 @@ function addEventListenersToButtons() {
     });
 
     document.getElementById("stand").addEventListener("click", () => {
+        mainMusic.volume = 0.5;
+        mainMusic.play()
         while (scores[1] < 18) {
             let cardType = addScore(1);
             enemyCards.push(getRandomCardOfType(cardType));
@@ -178,7 +182,6 @@ function checkWinLose() {
         <br>`
         addEventListenersToButtons();
     }
-
 }
 
 
