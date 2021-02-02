@@ -6,6 +6,7 @@ let YOUR_CARDS_DIV = document.getElementById("yourCards");
 let scores = [0, 0];
 let enemyCards = [];
 let yourCards = [];
+let money = 500;
 
 
 function getCardRoots() {
@@ -112,7 +113,7 @@ function checkWinLose() {
     let finalScores = `
     Your score: ${scores[0]}<br>
     Enemy score: ${scores[1]}<br>
-    <button id="newGame">New game!</button>
+    <button id="newGame">Next Round!</button>
     <br>
     <br>`;
 
@@ -126,9 +127,17 @@ function checkWinLose() {
     } else if (player1win) {
         GAME_DIV_IN_DOM.innerHTML = `You won!!!<br>
         ${finalScores}`;
+        money += 150;
+        if (money >= 1000) {
+
+        }
     } else {
         GAME_DIV_IN_DOM.innerHTML = `You lose!!!<br>
         ${finalScores}`;
+        money -= 150;
+        if (money <= 0) {
+            
+        }
     }
     let shuffleSound = new Audio("/static/sounds/shuffle.wav").play();
     ENEMY_CARDS_DIV.innerHTML = "";
@@ -148,6 +157,7 @@ function checkWinLose() {
         YOUR_CARDS_DIV.innerHTML = "";
         DECK_CARDS_LEFT = { A: 4, K: 4, J: 4, Q: 4, N2: 4, N3: 4, N4: 4, N5: 4, N6: 4, N7: 4, N8: 4, N9: 4, N10: 4 }
         GAME_DIV_IN_DOM.innerHTML = `
+        <h3>Your money: <span id="money">${money} $</span></h3>
         <h3>Your Score is: <span id="score">0</span></h3>
         <h3>enemy Score is: <span id="enemyScore">0</span></h3>
         <button id="hit">Hit!</button>
